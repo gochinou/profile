@@ -1,0 +1,53 @@
+# install zsh
+sudo apt install zsh git tmux
+
+#install prezto
+git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
+
+#conf prezto
+setopt EXTENDED_GLOB
+$ for rcfile in "${ZDOTDIR:-$HOME}"/.zprezto/runcoms/^README.md(.N); do
+ln -s "$rcfile" "${ZDOTDIR:-$HOME}/.${rcfile:t}"
+done
+
+#source prezto into .zshrc
+echo "if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+fi" >> .zshrc
+
+#clone myRepo to override default configs
+git clone https://github.com/gochinou/dotfiles.git ~/.dotfiles
+#TODO link myFiles to override original files
+
+#install docker
+sudo apt-get remove docker docker-engine docker.io
+
+#Update the apt package index:
+sudo apt-get update
+#Install packages to allow apt to use a repository over HTTPS:
+sudo apt-get install \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    software-properties-common
+#Add Docker’s official GPG key:
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+#set up the stable repository. You always need the stable repository, even if you want to install builds from the edge or test repositories as well. To add the edge or test repository, add the word edge or test (or both) after the word stable in the commands below.
+sudo add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+
+#Update the apt package index.
+sudo apt-get update
+
+#Install the latest version of Docker CE
+sudo apt-get install docker-ce
+
+
+
+#install fuzzy-finder
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+~/.fzf/install
+
+#install intelliJ / sbt
